@@ -57,7 +57,7 @@
                     </a>
                     <ul class="collapse list-unstyled" id="otherSections">
                         <li>
-                            <a class="scroll-link" href="#section-3">Facturas</a>
+                            <a href="../factura/index.php">Facturas</a>
                         </li>
 
                     </ul>

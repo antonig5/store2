@@ -5,15 +5,16 @@ $traer = $_GET['codigo'];
 $sql = new Consulta();
 $datos = $sql->find('productos', 'where codigo=?', [$traer]);
 
-if (isset($_POST['id'])) {
-    $id = $_POST['id'];
-    $precio = $_POST['price'];
-    $cantidad = $_POST['cand'];
-    $producto = $_POST['name'];
+if (isset($_POST['update'])) {
+    $id = $_POST["id"];
+    $nombre = $_POST["name"];
+    $apellido = $_POST["cand"];
+    $precio = $_POST["price"];
 
-    $cosulta = new Consulta();
-    $act = $cosulta->editar("productos", 'nombre=?,cantidad=?,precio=? ', 'where codigo=?', array($producto, $cantidad, $precio, $id));
-    header('Location:index.php');
+    $sql = new Consulta();
+    $datos = $sql->editar('productos', 'nombre=?,precio=?,cantidad=? where codigo=?', array($nombre, $precio, $apellido, $id));
+
+    header('Location:index.php');  # code...
 }
 
 
@@ -65,7 +66,7 @@ if (isset($_POST['id'])) {
                                 </td>
                                 <td>
                                     <p class="card__info">
-                                        <input type="text" value="<? echo $datos['cantidad'] ?>" name="cand">
+                                        <input type="number" value="<? echo $datos['cantidad'] ?>" name="cand">
 
                                     </p>
                                 </td>
