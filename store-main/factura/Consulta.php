@@ -11,7 +11,7 @@ class Consulta
   public  function findAll($tabla, $condiciones = null, $arraycondicion = null)
   {
     $con = new Conexion();
-    $consulta = $con->prepare('SELECT * FROM ' . $tabla . ' ' . $condiciones . ' ');
+    $consulta = $con->prepare('SELECT *  FROM ' . $tabla . ' ' . $condiciones . ' ');
     $consulta->execute($arraycondicion);
     $registros = $consulta->fetchAll();
 

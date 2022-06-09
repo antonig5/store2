@@ -13,7 +13,7 @@ if (isset($_POST['agregar'])) {
     $dir = $_POST['dir'];
     $doc = $_POST['doc'];
     $sql = new Consulta();
-    $resultado = $sql->guardar("clientes", "(documento, nombre,apellido,telefono,direccion) values ( ?,?, ?, ?,?)", array($doc, $nombre, $apellido, $tele, $dir));
+    $resultado = $sql->guardar("clientes", "(documento, nombre,apellido,telefono,direccion) values ( ?,?,?,?,?)", array($doc, $nombre, $apellido, $tele, $dir));
 
 
 
@@ -92,7 +92,7 @@ foreach ($arrDatos as $muestra) {
 
 </table>
 <tr>
-    <form action="" method="post" class="row g-3">
+    <form action="" method="POST" class="row g-3">
         <input type="text" name="doc" placeholder="Documento" width="2px" class="form-control col-auto mx-5" style="width: 10rem;">
         <input type="text" name="nombre" placeholder="Nombre" width="2px" class="form-control col-auto mx-5" style="width: 10rem;">
         <input type="text" name="apellido" placeholder="Apellido" class="form-control  col-auto mx-5" style="width: 10rem;">
