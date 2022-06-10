@@ -6,19 +6,22 @@ $consulta = new Consulta();
 $data = $consulta->findAll('clientes', 'where documento=?', [$buscar]);
 
 
+
 if (isset($_GET['busca']) == $data) {
     $consulta = new Consulta();
     $arrDatos = $consulta->findAll('detalleproductos', 'INNER JOIN productos ON productos.codigo = detalleproductos.producto');
     $consulta = new Consulta();
     $data = $consulta->findAll('productos');
-    if (isset($_POST['agregar'])) {
 
+
+    if (isset($_POST['agregar'])) {
         $nombre = $_POST['product'];
         $precio = $_POST['price'];
         $cantidad = $_POST['cand'];
+
         $sql = new Consulta();
-        $resultado = $sql->guardar('detalleproductos', '(producto,cantidad,valor) values ( ?,?,?)', array($nombre, $cantidad, $precio));
-        header("Location:factura.php");
+        $resultado = $sql->guardar('detalleproductos', '(producto,cantidadP,valor) values ( ?,?,?)', array($nombre, $cantidad, $precio));
+        header("Location:factura.php?busca=$buscar");
     }
 ?>
 
@@ -37,17 +40,21 @@ if (isset($_GET['busca']) == $data) {
     </head>
 
     <body>
-
+        <? ?>
 
         <div id="page" class="wrapper">
+            <form action="actualizar.php" method="GET">
 
-            <table class="table ">
-                <th class="bg-primary bg-bordered" scope="col">Code</th>
-                <th class="bg-primary" scope="col">Nombre</th>
-                <th class="bg-primary" scope="col">Cantidad</th>
-                <th class="bg-primary" scope="col">Precio</th>
-                <th class="bg-primary" scope="col">Action</th>
-                <th class="bg-primary" scope="col"></th>
+
+
+
+                <table class="table ">
+                    <th class="bg-primary bg-bordered" scope="col">Code</th>
+                    <th class="bg-primary" scope="col">Nombre</th>
+                    <th class="bg-primary" scope="col">Cantidad</th>
+                    <th class="bg-primary" scope="col">Precio</th>
+                    <th class="bg-primary" scope="col">Action</th>
+                    <th class="bg-primary" scope="col"></th>
     </body>
 
 
@@ -57,26 +64,30 @@ if (isset($_GET['busca']) == $data) {
     /* var_dump($arrDatos);*/
     /*Recorremos todos los resultados, ya no hace falta invocar más a fetchAll como si fuera fetch...*/
     foreach ($arrDatos as $muestra) {
+        $cat = $muestra['cantidad'] - $muestra['cantidadP'];
 
-        $T = $T + $muestra['valor'];
+
+
+        $T = $T + $muestra['valor'] * $muestra['cantidadP'];
+
+
     ?>
         <tr>
-            <td> <?php echo $muestra['idFacD'] ?> </td>
+            <input type="text" value="<? echo $cat ?>" name="can">
+            <input type="text" value="<? echo $muestra['codigo'] ?>" name="id">
+            <td> <?php echo $muestra['idFacD'] ?></td>
             <td> <?php echo $muestra['nombre'] ?> </td>
             <td> <?php echo $muestra['cantidadP'] ?> </td>
             <td> <?php echo $muestra['valor'] ?> </td>
             <td>
-                <a href="eliminar.php?idUser=<?php echo $muestra['idUser'] ?> " class="btn btn-primary">
+                <a href="eliminar.php?idFacD=<?php echo $muestra['idFacD'] ?> &busca=<?php echo $buscar ?>" class="btn btn-primary">
+
                     eliminar
                 </a>
 
             </td>
 
-            <td>
-                <a href="update.php?codigo=<?php echo $muestra['codigo'] ?> " class="btn btn-primary">
-                    editar
-                </a>
-            </td>
+
 
         </tr>
     <?php
@@ -87,10 +98,14 @@ if (isset($_GET['busca']) == $data) {
         <tr>
             <th class="text-right" colspan="4">Gran total</th>
             <th><?php echo $T ?> </th>
-
+            <th> <button type="submit" class="btn btn-primary" name="editar">enviar</button></th>
         </tr>
     </tfoot>
     </table>
+
+    </form>
+
+
     <tr>
         <form action="" method="post" class="row g-3">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -112,8 +127,6 @@ if (isset($_GET['busca']) == $data) {
                     $("#money").val(r)
                 });
             </script>
-
-
 
 
 
