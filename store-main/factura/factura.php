@@ -1,4 +1,5 @@
 <?php
+session_start();
 require('../factura/Consulta.php');
 
 $buscar = $_GET['busca'];
@@ -9,18 +10,25 @@ $data = $consulta->findAll('clientes', 'where documento=?', [$buscar]);
 
 if (isset($_GET['busca']) == $data) {
     $consulta = new Consulta();
-    $arrDatos = $consulta->findAll('detalleproductos', 'INNER JOIN productos ON productos.codigo = detalleproductos.producto');
+    $arrDatos = $consulta->findAll('detalleproductostemporal', 'INNER JOIN productos ON productos.codigo = detalleproductostemporal.producto');
     $consulta = new Consulta();
     $data = $consulta->findAll('productos');
 
 
     if (isset($_POST['agregar'])) {
-        $nombre = $_POST['product'];
-        $precio = $_POST['price'];
-        $cantidad = $_POST['cand'];
+        if ($_POST['product'] == $_POST['product']) {
+            # code...
+        } else {
+            $nombre = $_POST['product'];
+            $precio = $_POST['price'];
+            $cantidad = $_POST['cand'];
 
-        $sql = new Consulta();
-        $resultado = $sql->guardar('detalleproductos', '(producto,cantidadP,valor) values ( ?,?,?)', array($nombre, $cantidad, $precio));
+            $sql = new Consulta();
+            $resultado = $sql->guardar('detalleproductostemporal', '(idFac,producto,cantidadP,valor) values (?,?,?,?)', array($buscar, $nombre, $cantidad, $precio));
+            $resultado2 = $sql->guardar('detalleproductos', '(idFac,producto,cantidadP,valor) values (?,?,?,?)', array($buscar, $nombre, $cantidad, $precio));
+        }
+
+
         header("Location:factura.php?busca=$buscar");
     }
 ?>
@@ -43,7 +51,7 @@ if (isset($_GET['busca']) == $data) {
         <? ?>
 
         <div id="page" class="wrapper">
-            <form action="actualizar.php" method="GET">
+            <form action="<? $_SERVER['PHP_SELF'] ?>" method="GET">
 
 
 
@@ -65,22 +73,26 @@ if (isset($_GET['busca']) == $data) {
     /*Recorremos todos los resultados, ya no hace falta invocar más a fetchAll como si fuera fetch...*/
     foreach ($arrDatos as $muestra) {
         $cat = $muestra['cantidad'] - $muestra['cantidadP'];
-
-
-
+        $catt = $muestra['cantidadP'] + $muestra['cantidad'] - $muestra['cantidadP'];
         $T = $T + $muestra['valor'] * $muestra['cantidadP'];
+        $m = $muestra['codigo'];
+
+        $f = $consulta->findAll('productos', 'where codigo=?', array($m));
 
 
+
+
+        $actualizar = $consulta->editar('productos', 'cantidad=? where codigo=?', [$cat, $m]);
     ?>
         <tr>
-            <input type="text" value="<? echo $cat ?>" name="can">
-            <input type="text" value="<? echo $muestra['codigo'] ?>" name="id">
+            <input type="hidden" value="<? echo $cat ?>" name="can">
+            <input type="hidden" value="<? echo $muestra['codigo'] ?>" name="id">
             <td> <?php echo $muestra['idFacD'] ?></td>
-            <td> <?php echo $muestra['nombre'] ?> </td>
+            <td> <?php echo $muestra['namep'] ?> </td>
             <td> <?php echo $muestra['cantidadP'] ?> </td>
             <td> <?php echo $muestra['valor'] ?> </td>
             <td>
-                <a href="eliminar.php?idFacD=<?php echo $muestra['idFacD'] ?> &busca=<?php echo $buscar ?>" class="btn btn-primary">
+                <a href="eliminar.php?idFacD=<?php echo $muestra['idFacD'] ?> &busca=<?php echo $buscar ?> &cantidad=<?php echo $catt ?> &code=<? echo $muestra['codigo'] ?>" class="btn btn-primary">
 
                     eliminar
                 </a>
@@ -98,7 +110,7 @@ if (isset($_GET['busca']) == $data) {
         <tr>
             <th class="text-right" colspan="4">Gran total</th>
             <th><?php echo $T ?> </th>
-            <th> <button type="submit" class="btn btn-primary" name="editar">enviar</button></th>
+
         </tr>
     </tfoot>
     </table>
@@ -114,7 +126,7 @@ if (isset($_GET['busca']) == $data) {
                 foreach ($data as $valor) {
                 ?>
 
-                    <option data-typeid="<?php echo $valor['precio'] ?>" value="<?php echo $valor['codigo'] ?>"><?php echo $valor['nombre'] ?></option>
+                    <option data-typeid="<?php echo $valor['precio'] ?>" value="<?php echo $valor['codigo'] ?>"><?php echo $valor['namep'] ?></option>
 
                 <?php
                 } ?>
@@ -141,7 +153,39 @@ if (isset($_GET['busca']) == $data) {
         </form>
 
     </tr>
+    <form action="actualizar.php" method="GET">
 
+        <input type="hidden" value="<? echo $T ?>" name="T">
+        <input type="hidden" value="<? echo $buscar ?>" name="client">
+        <input type="hidden" value="<? echo $_SESSION['id'] ?>" name="vent">
+
+
+
+        <th><button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Comprar
+            </button></th>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Desea generar la compra?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" name="no" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <button type="submit" name="enviar" class="btn btn-success">SI</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
 
     </html>
 
