@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <title>Admin</title>
+    <title>Vendedor</title>
 
     <!-- CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
@@ -19,11 +19,17 @@
     <link rel="stylesheet" href="../css/menu.css" />
     <link rel="stylesheet" href="../css/media-queries.css" />
 
+
+
+
 </head>
+
+
+
 <div class="wrapper ">
 
     <nav class="sidebar ">
-        <div class="container-fluid  ">
+        <div class="container-fluid">
 
             <div class="dismiss ">
                 <i class="fas fa-arrow-left"></i>
@@ -39,18 +45,7 @@
                 <li class="active">
                     <a class="scroll-link" href="../admin/index.php"><i class="fas fa-home"></i> Home</a>
                 </li>
-                <li>
-                    <a href="../clientes/index.php"><i class="fa-solid fa-hand-holding-hand"></i>Clientes</a>
-                </li>
-                <li>
-                    <a href="../users/index.php"><i class="fas fa-user"></i>Usuarios</a>
-                </li>
-                <li>
-                    <a href="../products/index.php"><i class="fa-solid fa-cubes-stacked"></i> Productos</a>
-                </li>
-                <li>
-                    <a href="../proveedores/index.php"><i class="fa-solid fa-truck-ramp-box"></i>Proveedores</a>
-                </li>
+
                 <li>
                     <a href="#otherSections" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" role="button" aria-controls="otherSections">
                         <i class="fas fa-sync"></i>Mas Acciones

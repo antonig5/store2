@@ -4,11 +4,11 @@ require('../factura/Consulta.php');
 
 $buscar = $_GET['busca'];
 $consulta = new Consulta();
-$data = $consulta->findAll('clientes', 'where documento=?', [$buscar]);
+$data2 = $consulta->findAll('clientes', 'where documento=?', [$buscar]);
 
 
 
-if (isset($_GET['busca']) == $data) {
+if (isset($_GET['busca']) == $data2) {
     $consulta = new Consulta();
     $arrDatos = $consulta->findAll('detalleproductostemporal', 'INNER JOIN productos ON productos.codigo = detalleproductostemporal.producto');
     $consulta = new Consulta();
@@ -16,17 +16,15 @@ if (isset($_GET['busca']) == $data) {
 
 
     if (isset($_POST['agregar'])) {
-        if ($_POST['product'] == $_POST['product']) {
-            # code...
-        } else {
-            $nombre = $_POST['product'];
-            $precio = $_POST['price'];
-            $cantidad = $_POST['cand'];
 
-            $sql = new Consulta();
-            $resultado = $sql->guardar('detalleproductostemporal', '(idFac,producto,cantidadP,valor) values (?,?,?,?)', array($buscar, $nombre, $cantidad, $precio));
-            $resultado2 = $sql->guardar('detalleproductos', '(idFac,producto,cantidadP,valor) values (?,?,?,?)', array($buscar, $nombre, $cantidad, $precio));
-        }
+        $nombre = $_POST['product'];
+        $precio = $_POST['price'];
+        $cantidad = $_POST['cand'];
+
+        $sql = new Consulta();
+        $resultado = $sql->guardar('detalleproductostemporal', '(idFac,producto,cantidadP,valor) values (?,?,?,?)', array($buscar, $nombre, $cantidad, $precio));
+        $resultado2 = $sql->guardar('detalleproductos', '(idFac,producto,cantidadP,valor) values (?,?,?,?)', array($buscar, $nombre, $cantidad, $precio));
+
 
 
         header("Location:factura.php?busca=$buscar");
@@ -35,6 +33,7 @@ if (isset($_GET['busca']) == $data) {
 
     <!DOCTYPE html>
     <html lang="en" class="wrapper" id="pages">
+
 
     <head>
         <meta charset="UTF-8">
@@ -46,6 +45,11 @@ if (isset($_GET['busca']) == $data) {
         include_once '../contens/header.php';
         ?>
     </head>
+    <style>
+        body {
+            background-color: #343a40;
+        }
+    </style>
 
     <body>
         <? ?>
@@ -56,12 +60,12 @@ if (isset($_GET['busca']) == $data) {
 
 
 
-                <table class="table ">
+                <table class="table table-dark table-hover">
                     <th class="bg-primary bg-bordered" scope="col">Code</th>
                     <th class="bg-primary" scope="col">Nombre</th>
                     <th class="bg-primary" scope="col">Cantidad</th>
                     <th class="bg-primary" scope="col">Precio</th>
-                    <th class="bg-primary" scope="col">Action</th>
+
                     <th class="bg-primary" scope="col"></th>
     </body>
 
@@ -161,7 +165,7 @@ if (isset($_GET['busca']) == $data) {
 
 
 
-        <th><button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <th><button type="button" class="btn btn-success px-5 mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal" style="margin-left: 25rem;">
                 Comprar
             </button></th>
 
@@ -171,16 +175,24 @@ if (isset($_GET['busca']) == $data) {
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Cat Soft</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Desea generar la compra?
+                        <?
+                        foreach ($data2 as $client) {
+
+
+                        ?>
+                            <h2>Valor de la compra: <? echo $T ?></h2>
+                            <h2>Usted: <? echo $client['nombre'] ?> <? echo $client['apellido'] ?></h2>
+                            Desea generar la compra?
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" name="no" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                        <button type="submit" name="enviar" class="btn btn-success">SI</button>
-                    </div>
+                <? } ?>
+                <div class="modal-footer">
+                    <button type="submit" name="no" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button type="submit" name="enviar" class="btn btn-success">SI</button>
+                </div>
                 </div>
             </div>
         </div>

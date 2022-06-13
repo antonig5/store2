@@ -30,7 +30,7 @@ session_start();
         $consulta = new Consulta();
         $actualizar = $consulta->guardar('factura', '(cliente,vendedor,total) values (?,?,?)', array($id, $vendedor, $datos));
         $delete = $consulta->delete('detalleproductostemporal', 'where ?', array($id));
-        header('Location:pdf.php');
+        header("Location:pdf.php?client=$id");
     }
 
 

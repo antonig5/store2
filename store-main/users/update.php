@@ -1,18 +1,18 @@
 <?
 require('../factura/Consulta.php');
 
-$traer = $_GET['codigo'];
+$traer = $_GET['idUser'];
 $sql = new Consulta();
-$datos = $sql->find('productos', 'where codigo=?', [$traer]);
+$datos = $sql->find('usuarios', 'where idUser=?', [$traer]);
 
 if (isset($_POST['update'])) {
     $id = $_POST["id"];
     $nombre = $_POST["name"];
-    $apellido = $_POST["cand"];
-    $precio = $_POST["price"];
+    $pass = $_POST["cand"];
+    $correo = $_POST["price"];
 
     $sql = new Consulta();
-    $datos = $sql->editar('productos', 'namep=?,precio=?,cantidad=? where codigo=?', array($nombre, $precio, $apellido, $id));
+    $datos = $sql->editar('usuarios', 'user=?,name=?,correo=? where idUser=?', array($pass, $nombre, $correo,  $id));
 
     header('Location:index.php');  # code...
 }
@@ -43,36 +43,38 @@ if (isset($_POST['update'])) {
 
             <div class="card">
                 <div class="card__content">
-                    <h3 class="card__header">Producto Nº <? echo $datos['codigo'] ?></h3>
+                    <h3 class="card__header">Producto Nº <? echo $datos['idUser'] ?></h3>
                     <form action="" method="POST">
                         <table>
                             <thead>
                                 <tr>
                                     <th>
+                                        <p class="card__info">Correo: </p>
+                                    </th>
+                                    <th>
                                         <p class="card__info">Nombre: </p>
                                     </th>
                                     <th>
-                                        <p class="card__info">Cantidad: </p>
-                                    </th>
-                                    <th>
-                                        <p class="card__info">Precio: </p>
+                                        <p class="card__info">User: </p>
                                     </th>
                                 </tr>
 
                             </thead>
                             <tr>
+
                                 <td>
-                                    <p class="card__info"> <input type="text" value="<? echo $datos['namep'] ?>" name="name"></p>
+                                    <p class="card__info"><input type="email" value="<? echo $datos['correo'] ?>" name="price"> </p>
+                                </td>
+                                <td>
+                                    <p class="card__info"> <input type="text" value="<? echo $datos['name'] ?>" name="name"></p>
                                 </td>
                                 <td>
                                     <p class="card__info">
-                                        <input type="number" value="<? echo $datos['cantidad'] ?>" name="cand">
+                                        <input type="text" value="<? echo $datos['user'] ?>" name="cand">
 
                                     </p>
                                 </td>
-                                <td>
-                                    <p class="card__info"><input type="text" value="<? echo $datos['precio'] ?>" name="price"> </p>
-                                </td>
+
                                 <input type="hidden" value="<? echo $traer ?>" name="id">
                             </tr>
 

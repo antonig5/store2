@@ -12,8 +12,8 @@ if (isset($_POST['agregar'])) {
     $tele = $_POST['tele'];
     $dir = $_POST['dir'];
     $doc = $_POST['doc'];
-    $sql = new Consulta();
-    $resultado = $sql->guardar("clientes", "(documento, nombre,apellido,telefono,direccion) values ( ?,?,?,?,?)", array($doc, $nombre, $apellido, $tele, $dir));
+
+    $resultado = $consulta->guardar("clientes", "(documento, nombre,apellido,telefono,direccion) values ( ?,?,?,?,?)", array($doc, $nombre, $apellido, $tele, $dir));
 
 
 
@@ -38,11 +38,16 @@ if (isset($_POST['agregar'])) {
     include_once '../contens/header.php';
     ?>
 </head>
+<style>
+    body {
+        background-color: #343a40;
+    }
+</style>
 
 <body>
     <div id="page" class="wrapper">
 
-        <table class="table ">
+        <table class="table table-dark table-hover">
             <th class="bg-primary bg-bordered" scope="col">Documento</th>
 
             <th class="bg-primary" scope="col">Nombre</th>
@@ -72,14 +77,14 @@ foreach ($arrDatos as $muestra) {
 
 
         <td>
-            <a href="eliminar.php?idUser=<?php echo $muestra['idUser'] ?> " class="btn btn-primary">
+            <a href="eliminar.php?documento=<?php echo $muestra['documento'] ?> " class="btn btn-primary">
                 eliminar
             </a>
 
         </td>
 
         <td>
-            <a href="actualizar.php?idUser=<?php echo $muestra['idUser'] ?> " class="btn btn-primary">
+            <a href="update.php?documento=<?php echo $muestra['documento'] ?> " class="btn btn-primary">
                 editar
             </a>
         </td>
@@ -93,7 +98,7 @@ foreach ($arrDatos as $muestra) {
 </table>
 <tr>
     <form action="" method="POST" class="row g-3">
-        <input type="text" name="doc" placeholder="Documento" width="2px" class="form-control col-auto mx-5" style="width: 10rem;">
+        <input type="number" name="doc" placeholder="Documento" width="2px" class="form-control col-auto mx-5" style="width: 10rem;">
         <input type="text" name="nombre" placeholder="Nombre" width="2px" class="form-control col-auto mx-5" style="width: 10rem;">
         <input type="text" name="apellido" placeholder="Apellido" class="form-control  col-auto mx-5" style="width: 10rem;">
         <input type="text" name="dir" placeholder="Direccion" class="form-control col-auto mx-5 " style="width: 10rem;">

@@ -40,13 +40,18 @@ if (isset($_POST['agregar'])) {
     include_once '../contens/header.php';
     ?>
 </head>
+<style>
+    body {
+        background-color: #343a40;
+    }
+</style>
 
 <body>
 
 
     <div id="page" class="wrapper">
 
-        <table class="table ">
+        <table class="table table-dark table-hover ">
             <th class="bg-primary bg-bordered" scope="col">Code</th>
 
             <th class="bg-primary" scope="col">Nombre</th>
@@ -70,7 +75,7 @@ foreach ($arrDatos as $muestra) {
 
         <td> <?php echo $muestra['codigo'] ?> </td>
 
-        <td> <?php echo $muestra['nombre'] ?> </td>
+        <td> <?php echo $muestra['namep'] ?> </td>
         <td> <?php echo $muestra['nombreP'] ?> </td>
         <td> <?php echo $muestra['precio'] ?> </td>
         <td><?php echo $muestra['cantidad'] ?></td>
@@ -78,7 +83,7 @@ foreach ($arrDatos as $muestra) {
 
 
         <td>
-            <a href="eliminar.php?idUser=<?php echo $muestra['idUser'] ?> " class="btn btn-primary">
+            <a href="eliminar.php?codigo=<?php echo $muestra['codigo'] ?> " class="btn btn-primary">
                 eliminar
             </a>
 

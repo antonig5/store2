@@ -17,7 +17,7 @@ if (isset($_POST['agregar'])) {
     $rol = $_POST['tipo'];
 
     $sql = new Consulta();
-    $resultado = $sql->guardar("usuarios", "(idTipo, nombre,user, contraseña, correo) values ( ?,?, ?, ?,?)", array($rol, $nombre, $apellido, $pass_cifrado, $email));
+    $resultado = $sql->guardar("usuarios", "(idTipo, name,user, contraseña, correo) values ( ?,?, ?, ?,?)", array($rol, $nombre, $apellido, $pass_cifrado, $email));
 
 
 
@@ -46,7 +46,7 @@ if (isset($_POST['agregar'])) {
 <body>
     <div id="page" class="wrapper">
 
-        <table class="table ">
+        <table class="table table-dark table-hover ">
             <th class="bg-primary bg-bordered" scope="col">Id</th>
             <th class="bg-primary" scope="col">tipo</th>
             <th class="bg-primary" scope="col">nombre</th>
@@ -69,7 +69,7 @@ foreach ($arrDatos as $muestra) {
 
         <td> <?php echo $muestra['idUser'] ?> </td>
         <td> <?php echo $muestra['tipo'] ?> </td>
-        <td> <?php echo $muestra['nombre'] ?> </td>
+        <td> <?php echo $muestra['name'] ?> </td>
         <td> <?php echo $muestra['user'] ?> </td>
         <td> <?php echo $muestra['correo'] ?> </td>
         <td><?php echo /*$persona->clave*/ '°°°°°°°' ?></td>
@@ -83,7 +83,7 @@ foreach ($arrDatos as $muestra) {
         </td>
 
         <td>
-            <a href="actualizar.php?idUser=<?php echo $muestra['idUser'] ?> " class="btn btn-primary">
+            <a href="update.php?idUser=<?php echo $muestra['idUser'] ?> " class="btn btn-primary">
                 editar
             </a>
         </td>

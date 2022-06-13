@@ -16,6 +16,7 @@ require_once('factura/Conexion.php');
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
+
 <body>
     <img class="wave" src="img/wave.png">
     <div class="container">
@@ -44,7 +45,7 @@ require_once('factura/Conexion.php');
                         <input type="password" class="input" name="password">
                     </div>
                 </div>
-                <a href="#">Olvidaste la contraseña? 🥺</a>
+
                 <input type="submit" class="btn" value="Login" name="envia">
             </form>
         </div>

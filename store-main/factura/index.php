@@ -15,6 +15,11 @@ require_once 'Consulta.php';
     include_once '../contens/header.php';
     ?>
 </head>
+<style>
+    body {
+        background-color: #343a40;
+    }
+</style>
 
 <body>
 

@@ -17,7 +17,7 @@ if (!isset($_POST["user"]) and !isset($_POST["envia"])) {
         $resultado = $sql->find('usuarios', 'where user =? ', array($login));
 
         if ($registro = $resultado) {
-            $_SESSION['name'] = $registro['nombre'];
+            $_SESSION['name'] = $registro['name'];
             $_SESSION['last'] = $registro['user'];
             $_SESSION['id'] = $registro['idUser'];
 
@@ -36,7 +36,7 @@ if (!isset($_POST["user"]) and !isset($_POST["envia"])) {
             if ($valida == 1) {
                 header("Location:admin/index.php");
             } else if ($valida == 2) {
-                header("Location:funcionario/index.php");
+                header("Location:vendedor/index.php");
             }
         } elseif (!isset($_SESSION['id']) ||  !isset($valida)) {
             header("Location:index.php");
