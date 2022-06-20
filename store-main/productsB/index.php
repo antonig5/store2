@@ -1,10 +1,9 @@
 <?php
-session_start();
 require('../factura/Consulta.php');
 
 
 $consulta = new Consulta();
-$arrDatos = $consulta->findAll('productos, proveedor', 'where productos.nit = proveedor.nit');
+$arrDatos = $consulta->findAll('productos, proveedor', ' where productos.nit = proveedor.nit');
 
 $consulta = new Consulta();
 $data = $consulta->findAll('proveedor');
@@ -16,7 +15,7 @@ if (isset($_POST['agregar'])) {
     $nit = $_POST['tipo'];
 
     $sql = new Consulta();
-    $resultado = $sql->guardar("productos", "( nombre,nit,precio,cantidad) values ( ?,?,?,?)", array($nombre, $nit, $precio, $cantidad));
+    $resultado = $sql->guardar("productos", "(namep,nit,precio,cantidad) values ( ?,?,?,?)", array($nombre, $nit, $precio, $cantidad));
 
 
 
@@ -38,12 +37,7 @@ if (isset($_POST['agregar'])) {
 
     <title>Document</title>
     <?
-    if ($_SESSION['tipo'] == 6) {
-        include_once '../contens/headerA.php';
-    } else {
-        include_once '../contens/header.php';
-    }
-
+    include_once '../contens/headerB.php';
     ?>
 </head>
 <style>
@@ -65,6 +59,8 @@ if (isset($_POST['agregar'])) {
             <th class="bg-primary" scope="col">Precio</th>
             <th class="bg-primary" scope="col">Cantidad</th>
             <th class="bg-primary" scope="col">Fecha</th>
+            <th class="bg-primary" scope="col">Ultima modificacion</th>
+
             <th class="bg-primary" scope="col">Action</th>
             <th class="bg-primary" scope="col"></th>
 </body>
@@ -72,10 +68,18 @@ if (isset($_POST['agregar'])) {
 
 
 <?php
+$tabla = $consulta->findAll('SHOW TABLE STATUS');
 
+$mas_reciente = 0;
 /* var_dump($arrDatos);*/
 /*Recorremos todos los resultados, ya no hace falta invocar más a fetchAll como si fuera fetch...*/
 foreach ($arrDatos as $muestra) {
+    $n = $muestra['namep'];
+    $hora = strtotime($muestra['fecha']);
+    if ($hora > $mas_reciente) {
+        $mas_reciente = $hora;
+    }
+
 ?>
     <tr>
 
@@ -86,41 +90,23 @@ foreach ($arrDatos as $muestra) {
         <td> <?php echo $muestra['precio'] ?> </td>
         <td><?php echo $muestra['cantidad'] ?></td>
         <td><?php echo $muestra['fecha'] ?></td>
-
-        <?
-        if ($_SESSION['tipo'] == 6) {
-        ?>
-            <td>
-                <a href="ver.php?codigo=<?php echo $muestra['codigo'] ?> " class="btn btn-primary">
-                    Ver
-                </a>
-
-            </td>
-        <?
-
-        } else {
+        <td><?php
+            echo date('Y-m-d', $mas_reciente);
+            ?></td>
 
 
+        <td>
+            <a href="eliminar.php?codigo=<?php echo $muestra['codigo'] ?> " class="btn btn-primary">
+                eliminar
+            </a>
 
+        </td>
 
-        ?>
-            <td>
-                <a href="eliminar.php?codigo=<?php echo $muestra['codigo'] ?> " class="btn btn-primary">
-                    eliminar
-                </a>
-
-            </td>
-
-            <td>
-                <a href="update.php?codigo=<?php echo $muestra['codigo'] ?> " class="btn btn-primary">
-                    editar
-                </a>
-            </td>
-        <?
-        }
-
-
-        ?>
+        <td>
+            <a href="update.php?codigo=<?php echo $muestra['codigo'] ?> " class="btn btn-primary">
+                editar
+            </a>
+        </td>
 
     </tr>
 

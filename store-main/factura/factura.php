@@ -15,6 +15,7 @@ if (isset($_GET['busca']) == $data2) {
     $data = $consulta->findAll('productos');
 
 
+
     if (isset($_POST['agregar'])) {
 
         $nombre = $_POST['product'];
@@ -42,7 +43,12 @@ if (isset($_GET['busca']) == $data2) {
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
         <title>Document</title>
         <?php
-        include_once '../contens/header.php';
+        if ($_SESSION['tipo'] == 6) {
+            include_once '../contens/headerA.php';
+        } else {
+            include_once '../contens/header.php';
+        }
+
         ?>
     </head>
     <style>
@@ -81,12 +87,11 @@ if (isset($_GET['busca']) == $data2) {
         $T = $T + $muestra['valor'] * $muestra['cantidadP'];
         $m = $muestra['codigo'];
 
-        $f = $consulta->findAll('productos', 'where codigo=?', array($m));
+        $f = $consulta->find('productos', 'where codigo=?', array($m));
 
 
 
 
-        $actualizar = $consulta->editar('productos', 'cantidad=? where codigo=?', [$cat, $m]);
     ?>
         <tr>
             <input type="hidden" value="<? echo $cat ?>" name="can">
@@ -163,6 +168,9 @@ if (isset($_GET['busca']) == $data2) {
         <input type="hidden" value="<? echo $buscar ?>" name="client">
         <input type="hidden" value="<? echo $_SESSION['id'] ?>" name="vent">
 
+        <input type="hidden" value="<? echo $muestra['codigo'] ?>" name="codigo">
+        <input type="hidden" value="<? echo $catt ?>" name="cantidad">
+        <input type="hidden" value="<? echo $da['idFacD'] ?>" name="fac">
 
 
         <th><button type="button" class="btn btn-success px-5 mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal" style="margin-left: 25rem;">
@@ -228,6 +236,8 @@ if (isset($_GET['busca']) == $data2) {
         <script>
             alertify.error("El cliente no registrado");
         </script>
+
+        <a class="btn btn-success" href="../clientes/index.php">Añadir cliente</a>
     </body>
 
     </html>

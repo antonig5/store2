@@ -20,6 +20,7 @@ if (!isset($_POST["user"]) and !isset($_POST["envia"])) {
             $_SESSION['name'] = $registro['name'];
             $_SESSION['last'] = $registro['user'];
             $_SESSION['id'] = $registro['idUser'];
+            $_SESSION['tipo'] = $registro['idTipo'];
 
 
             if (password_verify($password, $registro['contraseña'])) {
@@ -37,6 +38,10 @@ if (!isset($_POST["user"]) and !isset($_POST["envia"])) {
                 header("Location:admin/index.php");
             } else if ($valida == 2) {
                 header("Location:vendedor/index.php");
+            } else if ($valida == 6) {
+                header("Location:auditorio/index.php");
+            } else if ($valida == 7) {
+                header("Location:bodega/index.php");
             }
         } elseif (!isset($_SESSION['id']) ||  !isset($valida)) {
             header("Location:index.php");

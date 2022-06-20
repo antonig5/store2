@@ -5,11 +5,11 @@ session_start();
 require('../factura/Consulta.php');
 
 
-if (isset($_GET['client'])) {
-    $id = $_GET['client'];
+if (isset($_GET['idFac'])) {
+    $id = $_GET['idFac'];
     $consulta = new Consulta();
-    $data = $consulta->find('factura,clientes,usuarios,detalleproductos', 'where factura.cliente=? ', [$id]);
-    $produc = $consulta->findAll('detalleproductos', 'INNER JOIN productos ON productos.codigo = detalleproductos.producto  where detalleproductos.idFac=?', [$id])
+
+    $produc = $consulta->findAll('detalleproductos', 'INNER JOIN productos ON productos.codigo = detalleproductos.producto INNER JOIN factura ON factura.idFac=detalleproductos.idFac INNER JOIN usuarios ON usuarios.idUser = factura.vendedor INNER JOIN clientes ON clientes.documento=factura.cliente  where detalleproductos.idFac=?', [$id])
 ?>
 
     <!DOCTYPE html>
@@ -75,9 +75,11 @@ if (isset($_GET['client'])) {
         <table class="styled-table">
             <thead>
                 <tr>
+
                     <th class="bg-primary bg-bordered" scope="col">Id</th>
                     <th class="bg-primary" scope="col">Cliente</th>
                     <th class="bg-primary" scope="col">Vendedor</th>
+
                     <th class="bg-primary" scope="col">Total</th>
                     <th class="bg-primary" scope="col">Fecha</th>
 
@@ -88,16 +90,21 @@ if (isset($_GET['client'])) {
 
             <tbody>
                 <tr class="active-row">
+                    <?
+                    foreach ($produc as $data) {
 
-                    <td> <?php echo $data['idFacD'] ?> </td>
-                    <td> <?php echo $data['name'] ?> </td>
-                    <td> <?php echo $data['nombre'] ?> </td>
+                    ?>
 
-                    <td> <?php echo $data['total'] ?> </td>
-                    <td> <?php echo $data['fecha'] ?> </td>
+                        <td> <?php echo $data['idFac'] ?> </td>
+                        <td> <?php echo $data['name'] ?> </td>
+                        <td> <?php echo $data['nombre'] ?> </td>
+
+                        <td> <?php echo $data['total'] ?> </td>
+                        <td> <?php echo $data['fecha'] ?> </td>
 
 
-
+                    <?
+                    } ?>
 
 
 
@@ -125,7 +132,7 @@ if (isset($_GET['client'])) {
 
                     <td> <?php echo $productos ?></td>
                     <td><?php echo $precio ?></td>
-                    <td><?php echo $data['cantidadP'] ?></td>
+                    <td><?php echo $ver['cantidadP'] ?></td>
                 </tr>
 
             <?  } ?>
@@ -133,7 +140,7 @@ if (isset($_GET['client'])) {
                 <tr>
                     <th></th>
                     <th>Total</th>
-                    <th> <?php echo $data['total'] ?> </th>
+                    <th> <?php echo $ver['total'] ?> </th>
                 </tr>
             </tfoot>
         </table>

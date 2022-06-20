@@ -1,4 +1,5 @@
 <?php
+session_start();
 require('../factura/Consulta.php');
 
 
@@ -12,11 +13,7 @@ if (isset($_POST['agregar'])) {
     $tele = $_POST['tele'];
     $dir = $_POST['dir'];
     $doc = $_POST['doc'];
-
     $resultado = $consulta->guardar("clientes", "(documento, nombre,apellido,telefono,direccion) values ( ?,?,?,?,?)", array($doc, $nombre, $apellido, $tele, $dir));
-
-
-
     header("Location:index.php");
 }
 
@@ -35,7 +32,12 @@ if (isset($_POST['agregar'])) {
 
     <title>Document</title>
     <?
-    include_once '../contens/header.php';
+    if ($_SESSION['tipo'] == 6) {
+        include_once '../contens/headerA.php';
+    } else {
+        include_once '../contens/header.php';
+    }
+
     ?>
 </head>
 <style>
@@ -75,22 +77,34 @@ foreach ($arrDatos as $muestra) {
         <td> <?php echo $muestra['telefono'] ?> </td>
         <td><?php echo $muestra['direccion'] ?></td>
 
+        <?
+        if ($_SESSION['tipo'] == 6) {
 
-        <td>
-            <a href="eliminar.php?documento=<?php echo $muestra['documento'] ?> " class="btn btn-primary">
-                eliminar
-            </a>
+        ?>
+            <td></td>
+            <td></td>
 
-        </td>
+        <?
+        } else {
 
-        <td>
-            <a href="update.php?documento=<?php echo $muestra['documento'] ?> " class="btn btn-primary">
-                editar
-            </a>
-        </td>
+        ?>
+            <td>
+                <a href="eliminar.php?documento=<?php echo $muestra['documento'] ?> " class="btn btn-primary">
+                    eliminar
+                </a>
+
+            </td>
+
+            <td>
+                <a href="update.php?documento=<?php echo $muestra['documento'] ?> " class="btn btn-primary">
+                    editar
+                </a>
+            </td>
 
     </tr>
-
+<?
+        }
+?>
 <?php
 }
 ?>

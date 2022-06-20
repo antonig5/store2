@@ -1,5 +1,6 @@
 <?php
 require_once 'Consulta.php';
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -12,7 +13,12 @@ require_once 'Consulta.php';
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <title>Document</title>
     <?
-    include_once '../contens/header.php';
+    if ($_SESSION['tipo'] == 6) {
+        include_once '../contens/headerA.php';
+    } else {
+        include_once '../contens/header.php';
+    }
+
     ?>
 </head>
 <style>
@@ -34,7 +40,7 @@ require_once 'Consulta.php';
     <form class="mt-5" action="factura.php" method="GET">
         <div class="row justify-content-center mb-3 ">
             <div class="col-md-3">
-                <input class="form-control me-2" type="search" placeholder="Documento" aria-label="Search" name="busca">
+                <input class="form-control me-2" type="number" placeholder="Documento" aria-label="Search" name="busca">
                 <button class="btn btn-success" type="submit" id="buscar">Buscar</button>
     </form>
 </body>

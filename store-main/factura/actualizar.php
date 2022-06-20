@@ -26,22 +26,24 @@ session_start();
         $datos = $_GET['T'];
         $id = $_GET['client'];
         $vendedor = $_GET['vent'];
-
+        $fac = $_GET['fac'];
+        $cantidad = $_GET['cantidad'];
+        $code = $_GET['codigo'];
         $consulta = new Consulta();
         $actualizar = $consulta->guardar('factura', '(cliente,vendedor,total) values (?,?,?)', array($id, $vendedor, $datos));
         $delete = $consulta->delete('detalleproductostemporal', 'where ?', array($id));
-        header("Location:pdf.php?client=$id");
+        $actualiza = $consulta->editar('productos', 'cantidad=? where codigo=?', array($cantidad, $code));
+        $ver = $consulta->find('factura', ' ORDER BY idFac DESC');
+        $cre = $consulta->editar('detalleproductos', 'idFac=?', array($ver['idFac']));
+        $tare = $consulta->find('factura');
+        $f = $tare['idFac'];
+
+        header("Location:pdf.php?idFac=$f");
     }
 
 
     if (isset($_GET['no'])) {
-        $datos = $_GET['T'];
-        $id = $_GET['client'];
-        $vendedor = $_GET['vent'];
 
-        $consulta = new Consulta();
-        $actualizar = $consulta->guardar('factura', '(cliente,vendedor,total) values (?,?,?)', array($id, $vendedor, $datos));
-        $delete = $consulta->delete('detalleproductostemporal', 'where ?', array($id));
         header('Location:index.php'); # code...
     }
 

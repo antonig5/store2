@@ -42,6 +42,11 @@ if (isset($_POST['agregar'])) {
     include_once '../contens/header.php';
     ?>
 </head>
+<style>
+    body {
+        background-color: #343a40;
+    }
+</style>
 
 <body>
     <div id="page" class="wrapper">

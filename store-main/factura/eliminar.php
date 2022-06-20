@@ -9,7 +9,7 @@ if (isset($_GET['busca'])) {
     $consulta = new Consulta();
     $eliminar = $consulta->delete('detalleproductostemporal', 'where idFacD=?', [$id]);
     $eliminar2 = $consulta->delete('detalleproductos', 'where idFacD=?', [$id]);
-    $actualiza = $consulta->editar('productos', 'cantidad=? where codigo=?', array($cantidad, $code));
+
     header("Location:factura.php?busca=$busca");
     # code...
 }
