@@ -31,10 +31,15 @@ session_start();
         $code = $_GET['codigo'];
         $consulta = new Consulta();
         $actualizar = $consulta->guardar('factura', '(cliente,vendedor,total) values (?,?,?)', array($id, $vendedor, $datos));
+        $ver = $consulta->find('factura', ' ORDER BY idFac DESC');
+
+        $cre = $consulta->editar('detalleproductostemporal', 'idFac=?', array($ver['idFac']));
+        $llamar = $consulta->find('detalleproductostemporal');
+        $cre2 = $consulta->editar('detalleproductos', 'idFac=? where producto=?', array($llamar['idFac'], $llamar['producto']));
+
         $delete = $consulta->delete('detalleproductostemporal', 'where ?', array($id));
         $actualiza = $consulta->editar('productos', 'cantidad=? where codigo=?', array($cantidad, $code));
-        $ver = $consulta->find('factura', ' ORDER BY idFac DESC');
-        $cre = $consulta->editar('detalleproductos', 'idFac=?', array($ver['idFac']));
+
         $tare = $consulta->find('factura');
         $f = $tare['idFac'];
 
