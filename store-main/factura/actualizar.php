@@ -30,17 +30,15 @@ session_start();
         $cantidad = $_GET['cantidad'];
         $code = $_GET['codigo'];
         $consulta = new Consulta();
-        $actualizar = $consulta->guardar('factura', '(cliente,vendedor,total) values (?,?,?)', array($id, $vendedor, $datos));
+        $actualizar = $consulta->guardar('factura', '(cliente,vendedor,total,idestatus) values (?,?,?,1)', array($id, $vendedor, $datos));
         $ver = $consulta->find('factura', ' ORDER BY idFac DESC');
-
         $cre = $consulta->editar('detalleproductostemporal', 'idFac=?', array($ver['idFac']));
-        $llamar = $consulta->find('detalleproductostemporal');
-        $cre2 = $consulta->editar('detalleproductos', 'idFac=? where producto=?', array($llamar['idFac'], $llamar['producto']));
-
+        $llamar = $consulta->findAll('detalleproductostemporal');
+        $resultado2 = $consulta->guardar('detalleproductos', "(idFacD,idFac,producto,cantidadP,valor) SELECT * FROM detalleproductostemporal");
         $delete = $consulta->delete('detalleproductostemporal', 'where ?', array($id));
         $actualiza = $consulta->editar('productos', 'cantidad=? where codigo=?', array($cantidad, $code));
 
-        $tare = $consulta->find('factura');
+        $tare = $consulta->find('factura', ' ORDER BY idFac DESC');
         $f = $tare['idFac'];
 
         header("Location:pdf.php?idFac=$f");

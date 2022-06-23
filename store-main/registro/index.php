@@ -4,9 +4,9 @@ require('../factura/Consulta.php');
 
 
 $consulta = new Consulta();
-$arrDatos = $consulta->findAll('factura,usuarios,clientes', 'where factura.cliente=clientes.documento and factura.vendedor=usuarios.idUser');
+$arrDatos = $consulta->findAll('factura,usuarios,clientes', 'where factura.cliente=clientes.documento and factura.vendedor=usuarios.idUser and idestatus=1');
 
-
+$data = $consulta->findAll('detalleproductos');
 
 ?>
 
@@ -63,10 +63,21 @@ $arrDatos = $consulta->findAll('factura,usuarios,clientes', 'where factura.clien
 
 
 <?php
+if (isset($_GET['alerta'])) {
+    foreach ($data as $dad) {
+        $datos = $consulta->find('detalleproductos', 'where idFac=?', [$dad['idFac']]);
+        $producto = $consulta->find('productos', 'where codigo=?', [$dad['producto']]);
+        $suma =  $dad['cantidadP'] + $producto['cantidad'];
+        $actualiza = $consulta->editar('productos', 'cantidad=? where codigo=?', [$suma, $producto['codigo']]);
+    }
+    echo '<script> window.location ="index.php?alert"</script>';
+}
+
 
 /* var_dump($arrDatos);*/
 /*Recorremos todos los resultados, ya no hace falta invocar más a fetchAll como si fuera fetch...*/
 foreach ($arrDatos as $muestra) {
+
 ?>
     <tr>
 
@@ -119,7 +130,7 @@ foreach ($arrDatos as $muestra) {
 
 
 <?
-if (isset($_GET['alerta'])) {
+if (isset($_GET['alert'])) {
 
 ?>
     <script>

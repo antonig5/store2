@@ -1,6 +1,6 @@
 <?php
-require_once 'Consulta.php';
 session_start();
+require_once('Consulta.php');
 ?>
 <!DOCTYPE html>
 <html lang="es">

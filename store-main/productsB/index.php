@@ -58,9 +58,8 @@ if (isset($_POST['agregar'])) {
             <th class="bg-primary" scope="col">Proveedor</th>
             <th class="bg-primary" scope="col">Precio</th>
             <th class="bg-primary" scope="col">Cantidad</th>
-            <th class="bg-primary" scope="col">Fecha</th>
+            <th class="bg-primary" scope="col">Fecha de creacion</th>
             <th class="bg-primary" scope="col">Ultima modificacion</th>
-
             <th class="bg-primary" scope="col">Action</th>
             <th class="bg-primary" scope="col"></th>
 </body>
@@ -90,8 +89,14 @@ foreach ($arrDatos as $muestra) {
         <td> <?php echo $muestra['precio'] ?> </td>
         <td><?php echo $muestra['cantidad'] ?></td>
         <td><?php echo $muestra['fecha'] ?></td>
-        <td><?php
-            echo date('Y-m-d', $mas_reciente);
+        <td>
+            <?php
+            if ($muestra['fecha_update'] == '0000-00-00') {
+                echo 'No se a modificado';
+            } else {
+                echo $muestra['fecha_update'];
+            }
+
             ?></td>
 
 

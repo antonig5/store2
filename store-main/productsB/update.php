@@ -4,15 +4,16 @@ require('../factura/Consulta.php');
 $traer = $_GET['codigo'];
 $sql = new Consulta();
 $datos = $sql->find('productos', 'where codigo=?', [$traer]);
-
+date_default_timezone_set('America/Bogota');
+$fecha = date('Y-m-d');
 if (isset($_POST['update'])) {
     $id = $_POST["id"];
     $nombre = $_POST["name"];
-    $apellido = $_POST["cand"];
+    $apellido = $_POST["cand"] + $_POST['canti'];
     $precio = $_POST["price"];
 
     $sql = new Consulta();
-    $datos = $sql->editar('productos', 'namep=?,precio=?,cantidad=? where codigo=?', array($nombre, $precio, $apellido, $id));
+    $datos = $sql->editar('productos', 'namep=?,precio=?,cantidad=?, fecha_update=? where codigo=?', array($nombre, $precio, $apellido, $fecha, $id));
 
     header('Location:index.php');  # code...
 }
@@ -66,14 +67,17 @@ if (isset($_POST['update'])) {
                                 </td>
                                 <td>
                                     <p class="card__info">
-                                        <input type="number" value="<? echo $datos['cantidad'] ?>" name="cand">
+                                        <input type="number" value="<? echo $datos['cantidad'] ?>" name="cand" readonly>
 
                                     </p>
                                 </td>
+
+
                                 <td>
                                     <p class="card__info"><input type="text" value="<? echo $datos['precio'] ?>" name="price"> </p>
                                 </td>
                                 <input type="hidden" value="<? echo $traer ?>" name="id">
+                                <input type="number" placeholder="cantidad a sumar" style="margin-left: -1rem;" name="canti">
                             </tr>
 
                         </table>

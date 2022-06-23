@@ -47,6 +47,7 @@ class Consulta
   }
 
 
+
   public  function editar($tabla, $values, $arraycondicion = null)
   {
     $con = new Conexion();

@@ -24,7 +24,6 @@ if (isset($_GET['busca']) == $data2) {
 
         $sql = new Consulta();
         $resultado = $sql->guardar('detalleproductostemporal', '(idFac,producto,cantidadP,valor) values (?,?,?,?)', array($buscar, $nombre, $cantidad, $precio));
-        $resultado2 = $sql->guardar('detalleproductos', '(idFac,producto,cantidadP,valor) values (?,?,?,?)', array($buscar, $nombre, $cantidad, $precio));
 
 
 
@@ -94,6 +93,7 @@ if (isset($_GET['busca']) == $data2) {
 
     ?>
         <tr>
+
             <input type="hidden" value="<? echo $cat ?>" name="can">
             <input type="hidden" value="<? echo $muestra['codigo'] ?>" name="id">
             <td> <?php echo $muestra['idFacD'] ?></td>
@@ -162,14 +162,14 @@ if (isset($_GET['busca']) == $data2) {
         </form>
 
     </tr>
-    <form action="actualizar.php" method="GET">
+    <form action="actualizar.php" method="GET" id="act">
 
         <input type="hidden" value="<? echo $T ?>" name="T">
         <input type="hidden" value="<? echo $buscar ?>" name="client">
         <input type="hidden" value="<? echo $_SESSION['id'] ?>" name="vent">
+        <input type="hidden" value="<? echo $muestra['producto'] ?>" name="codigo">
+        <input type="hidden" value="<? echo $cat ?>" name="cantidad">
 
-        <input type="hidden" value="<? echo $muestra['codigo'] ?>" name="codigo">
-        <input type="hidden" value="<? echo $catt ?>" name="cantidad">
         <input type="hidden" value="<? echo $da['idFacD'] ?>" name="fac">
 
 
@@ -192,6 +192,7 @@ if (isset($_GET['busca']) == $data2) {
 
 
                         ?>
+
                             <h2>Valor de la compra: <? echo $T ?></h2>
                             <h2>Usted: <? echo $client['nombre'] ?> <? echo $client['apellido'] ?></h2>
                             Desea generar la compra?
